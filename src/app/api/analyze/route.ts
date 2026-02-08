@@ -23,6 +23,7 @@ export async function POST(req: Request) {
     const bytes = Buffer.from(await image.arrayBuffer());
     const b64 = bytes.toString("base64");
     const mime = image.type || "image/jpeg";
+    const imageDataUrl = `data:${mime};base64,${b64}`;
 
     const prompt = `
 You are a nutrition assistant. Identify foods in the image and estimate calories + macros.
@@ -50,7 +51,7 @@ Rules:
           role: "user",
           content: [
             { type: "input_text", text: prompt },
-            { type: "input_image", image_url: `data:${mime};base64,${b64}` },
+            { type: "input_image", image_url: imageDataUrl, detail: "low" },
           ],
         },
       ],
